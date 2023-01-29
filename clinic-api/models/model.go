@@ -2,6 +2,13 @@ package models
 
 import "time"
 
+const (
+	Male   Gender = "муж"
+	Female Gender = "жен"
+)
+
+type Gender string
+
 type PersonalData struct {
 	Phone      string `json:"phone,omitempty"`
 	Email      string `json:"email,omitempty"`
@@ -14,6 +21,7 @@ type User struct {
 	FirstName    string    `json:"first_name,omitempty"`
 	LastName     string    `json:"last_name,omitempty"`
 	MiddleName   string    `json:"middle_name,omitempty"`
+	Gender       Gender    `json:"gender,omitempty"`
 	BirthDate    time.Time `json:"birth_date"`
 	Details      string    `json:"details,omitempty"`
 	PersonalData `json:"personal_data"`
