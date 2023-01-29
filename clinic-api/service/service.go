@@ -37,7 +37,7 @@ type Patient interface {
 }
 
 type Department interface {
-	Validate(m *models.Department)
+	Validate(m *models.Department) error
 	Create(m *models.Department) (id uint, err error)
 	Update(m *models.Department) error
 	Delete(id uint) error
