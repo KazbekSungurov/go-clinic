@@ -53,37 +53,33 @@ func (d *department) ScheduleOperationBuild(m *models.Department, from, to time.
 	}
 
 	for i := from; i.Before(to); i.AddDate(0, 0, 1) {
-		if slices.Contains[time.Weekday](m.WeekDays, i.Weekday()) {
-			m.Appointments = append(m.Appointments, models.Appointment{Day: i})
-			break
+		if slices.Contains[time.Weekday](m.ScheduleOperation.WeekDays, i.Weekday()) {
+			m.ScheduleOperation.Appointments = append(m.ScheduleOperation.Appointments, models.Appointment{Day: i})
 		}
 	}
 
 	return nil
 }
 
-//func (d *department) ScheduleConsultBuild(m *models.Department, from, to time.Time) error {
-//	if from.IsZero() || to.IsZero() {
-//		return errTimeIsNil
-//	}
-//
-//	if from.After(to) {
-//		from, to = to, from
-//	}
-//
-//	for i := from; i.Before(to); i.AddDate(0, 0, 1) {
-//		if slices.Contains[time.Weekday](m.WeekDays, i.Weekday()) {
-//			var as []models.Appointment
-//			m.ScheduleDetails.StartAt
-//			m.ScheduleDetails.EndAt
-//			m.ScheduleDetails.BreakStart
-//			m.ScheduleDetails.BreakDuration
-//			m.ScheduleDetails.ExaminationDuration
-//			as = append(as)
-//			m.Appointments = append(m.Appointments, models.Appointment{Day: i})
-//			break
-//		}
-//	}
-//
-//	return nil
-//}
+func (d *department) ScheduleConsultBuild(m *models.Department, from, to time.Time) error {
+	if from.IsZero() || to.IsZero() {
+		return errTimeIsNil
+	}
+
+	if from.After(to) {
+		from, to = to, from
+	}
+
+	for i := from; i.Before(to.AddDate(0, 0, 1)); i = i.AddDate(0, 0, 1) {
+		if slices.Contains[time.Weekday](m.ScheduleConsult.WeekDays, i.Weekday()) {
+			for x := m.ScheduleConsult.StartAt; x.Before(m.ScheduleConsult.EndAt.Add(time.Minute - m.ScheduleConsult.ExaminationDuration)); x = x.Add(m.ScheduleConsult.ExaminationDuration) {
+				if x.After(m.ScheduleConsult.BreakStart) && x.Before(m.ScheduleConsult.BreakStart.Add(m.ScheduleConsult.BreakDuration)) {
+					continue
+				}
+				m.ScheduleConsult.Appointments = append(m.ScheduleConsult.Appointments, models.Appointment{Day: time.Date(i.Year(), i.Month(), i.Day(), x.Hour(), x.Minute(), 0, 0, time.Local)})
+			}
+		}
+	}
+
+	return nil
+}

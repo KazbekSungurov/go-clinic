@@ -68,6 +68,6 @@ type Department struct {
 	ID                uint       `json:"id,omitempty"`
 	Name              string     `json:"name,omitempty"`
 	Employees         []Employee `json:"employees,omitempty"`
+	ScheduleConsult   `json:"schedule_consult"`
 	ScheduleOperation `json:"schedule_operation"`
-	ScheduleDetails   `json:"schedule_details"`
 }

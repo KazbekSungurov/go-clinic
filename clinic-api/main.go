@@ -1,1 +1,4 @@
-package clinic_api
+package main
+
+func main() {
+}
