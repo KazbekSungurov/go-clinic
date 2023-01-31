@@ -43,6 +43,16 @@ func (d *department) Get(id uint) (m *models.Department, err error) {
 	panic("implement me")
 }
 
+func (d *department) AddEmployee(id, employeeId uint) error {
+	// todo
+	panic("")
+}
+
+func (d *department) DeleteEmployee(id, employeeId uint) error {
+	// todo
+	panic("")
+}
+
 func (d *department) ScheduleOperationBuild(m *models.Department, from, to time.Time) error {
 	if from.IsZero() || to.IsZero() {
 		return errTimeIsNil

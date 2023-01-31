@@ -1,6 +1,9 @@
 package service
 
-import "clinic-api/models"
+import (
+	"clinic-api/models"
+	"time"
+)
 
 type Service struct {
 	// todo repository
@@ -42,4 +45,8 @@ type Department interface {
 	Update(m *models.Department) error
 	Delete(id uint) error
 	Get(id uint) (m *models.Department, err error)
+	AddEmployee(id, employeeId uint) error
+	DeleteEmployee(id, employeeId uint) error
+	ScheduleOperationBuild(m *models.Department, from, to time.Time) error
+	ScheduleConsultBuild(m *models.Department, from, to time.Time) error
 }
