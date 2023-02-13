@@ -35,7 +35,7 @@ func (u *user) Create(m *models.User) (id uint, err error) {
 		return 0, err
 	}
 
-	//TODO implement me
+	// todo implement me
 	panic("implement me")
 }
 
