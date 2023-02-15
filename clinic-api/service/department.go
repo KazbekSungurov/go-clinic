@@ -2,6 +2,7 @@ package service
 
 import (
 	"clinic-api/models"
+	"clinic-api/repository"
 	"errors"
 	validation "github.com/go-ozzo/ozzo-validation"
 	"golang.org/x/exp/slices"
@@ -14,12 +15,15 @@ var (
 
 type department struct {
 	Employee
+	repository.Repository
 	// todo logger
 }
 
-func newDepartmentService(e Employee) error {
-	// todo
-	return nil
+func initDepartmentService(r repository.Repository, e Employee) Department {
+	return &department{
+		Employee:   e,
+		Repository: r,
+	}
 }
 
 func (d *department) Validate(m *models.Department) error {
@@ -29,18 +33,20 @@ func (d *department) Validate(m *models.Department) error {
 }
 
 func (d *department) Create(m *models.Department) (id uint, err error) {
-	//TODO implement me
-	panic("implement me")
+	return d.Repository.CreateDepartment(m)
 }
 
 func (d *department) Update(m *models.Department) error {
-	//TODO implement me
-	panic("implement me")
+	return d.Repository.UpdateDepartment(m)
 }
 
 func (d *department) Get(id uint) (m *models.Department, err error) {
-	//TODO implement me
-	panic("implement me")
+	return d.Repository.GetDepartment(id)
+}
+
+func (d *department) Delete(id uint) error {
+	// todo employeeId
+	return d.Repository.DeleteDepartment(id)
 }
 
 func (d *department) AddEmployee(id, employeeId uint) error {
@@ -49,8 +55,8 @@ func (d *department) AddEmployee(id, employeeId uint) error {
 }
 
 func (d *department) DeleteEmployee(id, employeeId uint) error {
-	// todo
-	panic("")
+	// todo employeeId
+	panic("implement me")
 }
 
 func (d *department) ScheduleOperationBuild(m *models.Department, from, to time.Time) error {

@@ -2,17 +2,20 @@ package service
 
 import (
 	"clinic-api/models"
+	"clinic-api/repository"
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 )
 
 type user struct {
 	// todo logger
+	repository.Repository
 }
 
-func newUserService() *user {
-	// todo
-	return nil
+func initUserService(r repository.Repository) User {
+	return &user{
+		Repository: r,
+	}
 }
 
 func (u *user) Validate(m *models.User) error {
@@ -35,8 +38,7 @@ func (u *user) Create(m *models.User) (id uint, err error) {
 		return 0, err
 	}
 
-	// todo implement me
-	panic("implement me")
+	return u.Repository.CreateUser(m)
 }
 
 func (u *user) Update(m *models.User) error {
@@ -44,16 +46,13 @@ func (u *user) Update(m *models.User) error {
 		return err
 	}
 
-	//TODO implement me
-	panic("implement me")
+	return u.Repository.UpdateUser(m)
 }
 
 func (u *user) Delete(id uint) error {
-	//TODO implement me
-	panic("implement me")
+	return u.Repository.DeleteUser(id)
 }
 
 func (u *user) Get(id uint) (m *models.User, err error) {
-	//TODO implement me
-	panic("implement me")
+	return u.Repository.GetUser(id)
 }

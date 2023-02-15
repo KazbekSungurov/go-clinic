@@ -2,19 +2,27 @@ package service
 
 import (
 	"clinic-api/models"
+	"clinic-api/repository"
 	"time"
 )
 
 type Service struct {
-	// todo repository
-	// todo logger
 	User
 	Employee
 	Patient
 	Department
 }
 
-// todo New Service
+func NewService(r repository.Repository) *Service {
+	var s Service
+	// todo s.logger = logger
+	s.User = initUserService(r)
+	s.Employee = initEmployeeService(r, s.User)
+	s.Patient = initPatientService(r, s.User)
+	s.Department = initDepartmentService(r, s.Employee)
+
+	return &s
+}
 
 type User interface {
 	Validate(m *models.User) error
