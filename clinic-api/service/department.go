@@ -68,7 +68,7 @@ func (d *department) ScheduleOperationBuild(m *models.Department, from, to time.
 		from, to = to, from
 	}
 
-	for i := from; i.Before(to); i.AddDate(0, 0, 1) {
+	for i := from; i.Before(to.AddDate(0, 0, 1)); i = i.AddDate(0, 0, 1) {
 		if slices.Contains[time.Weekday](m.ScheduleOperation.WeekDays, i.Weekday()) {
 			m.ScheduleOperation.Appointments = append(m.ScheduleOperation.Appointments, models.Appointment{Day: i})
 		}

@@ -99,3 +99,10 @@ func (b *base) timerSet(d time.Duration) {
 		endSession(b.ID)
 	})
 }
+
+func (s *sessions) initDepartment(id int64, api *tgBot.BotAPI) session {
+	session := initDepartment(id, api, s.Service)
+	s.active = append(s.active, session)
+
+	return session
+}

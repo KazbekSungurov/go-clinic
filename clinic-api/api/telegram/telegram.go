@@ -9,6 +9,17 @@ const (
 	botToken string = "5818415012:AAHOO2abbEn5BnDuJhXOkBe65SZ28PVAVxs"
 )
 
+var (
+	mainMarkup = tgBot.NewInlineKeyboardMarkup(
+		tgBot.NewInlineKeyboardRow(
+			tgBot.NewInlineKeyboardButtonData("Создать клиента", "Создать клиента"),
+		),
+		tgBot.NewInlineKeyboardRow(
+			tgBot.NewInlineKeyboardButtonData("Ничего не надо!", "Ничего не надо!"),
+		),
+	)
+)
+
 type Bot struct {
 	api *tgBot.BotAPI
 	*sessions
@@ -60,11 +71,15 @@ func (b *Bot) defaultCallBack(update *tgBot.Update) {
 	//b.bot.AnswerCallbackQuery(callback)
 
 	switch update.CallbackQuery.Data {
+	case "Создать клиента":
+		s := b.initDepartment(int64(update.CallbackQuery.From.ID), b.api)
+		s.exec(update)
 	default:
 	}
 }
 
 func (b *Bot) defaultMsg(update *tgBot.Update) {
 	msg := tgBot.NewMessage(update.Message.Chat.ID, update.Message.Text)
+	msg.ReplyMarkup = mainMarkup
 	b.api.Send(msg)
 }
